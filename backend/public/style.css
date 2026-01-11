@@ -6,15 +6,33 @@ body{
   overflow: hidden;
   background: #f0f0f0;
   font-family: Poppins;
+  box-sizing: border-box;
 }
 header{
   background: var(--bg-color);
   display: flex;
   color: #fafafa;
   text-align: center;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 100%;
   font-family: Poppins;
+}
+header h1, header a{
+  margin: 15px;
+  transform: translateY(30px)
+}
+header a{
+  color: #fafafa;
+  text-decoration: none;
+  box-shadow: 5px 5px 10px hsl(250, 100%, 60%),
+              -5px -5px 10px hsl(250, 100%, 80%);
+  border-radius: 15px;
+  padding: 5px;
+  height: 25px
+}
+header a:hover{
+  box-shadow: 5px 5px 10px hsl(250, 100%, 80%),
+              -5px -5px 10px hsl(250, 100%, 60%);
 }
 header ul li{
   text-align: left;
@@ -34,13 +52,14 @@ header ul li{
   width: 45vw;
   font-size: 1.4em;
   font-family: Poppins;
+  overflow: scroll;
 }
 form{
   display: flex;
   flex-direction: column;
   width: 95%;
   font-family: Poppins;
-
+  margin-left: 5px;
 }
 .text{
   height: 50px;
@@ -65,7 +84,7 @@ form{
   font-family: Poppins;
 
 }
-#button{
+.button{
   height: 50px;
   text-align: center;
   font-size: 2em;
@@ -75,7 +94,6 @@ form{
   background-color: var(--bg-color);
   color: #fafafa;
 }
-#button:hover{
-  box-shadow: 0 0 20px hsl(250, 100%, 80%);
-  font-family: Poppins;
+.button:hover{
+  box-shadow: 0 0 15px var(--bg-color)
 }
