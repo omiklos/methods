@@ -1,29 +1,12 @@
 const express = require('express')
 const path = require('path')
 let {people} = require('./data.cjs')
+const {logger} = require('./logger.cjs')
 const app = express()
-
-function logger(req, res, next){
-  console.log(
-    req.method,
-    req.url
-  )
-  if(req.method === 'GET'){
-    console.log(
-      req.params,
-      req.query
-    )
-  } else if(req.method === 'POST'){
-    console.log(
-      req.body
-    )
-  }
-  next()
-}
 
 app.use([express.json(), express.urlencoded({ extended: true }), express.static(path.join(__dirname, './public')), logger])
 
-// I want to add params and queries
+
 
 app.get('/', (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, './frontend/index.html'))
@@ -31,22 +14,56 @@ app.get('/', (req, res) => {
 
 
 app.get('/data', (req, res) => {
-  res.json(people)
+  res.json({sucess: true, data: people})
 })
+app.get('/data/param/:personId', (req, res) => {
+  const {personId} = req.params
+  const person = people.find(
+    (people) => people.id === Number(personId)
+  )
+  if(!person){
+    return res.status(404).json({ sucess: false, msg: "person not found" })
+  }
+  return res.json({sucess: true, data: person})
+})
+app.get('/data/query', (req, res) => {
+  const {search, limit} = req.query
+  let sortedPeople = [...people]
+  if(search) {
+    sortedPeople = sortedPeople.filter((person) => {
+      return person.name.startsWith(search)
+    })
+  }
+  if(limit) {
+    sortedPeople = sortedPeople.slice(0, Number(limit))
+  }
+  if (sortedPeople.length < 1) {
+    return res.status(200).json({ sucess: true, data: [] })
+  }
+  res.status(200).json({sucess: true, data: sortedPeople})
+})
+
 app.post('/data', (req, res) => {
-  const { id, name } = req.body
-  if (!id || !name) {
-    return res.status(400).json({success: false, msg: 'please provide id and name'})
+  const { name } = req.body
+  if (!name) {
+    return res.status(400).json({sucess: false, msg: 'please provide name'})
   }
 
-  people.push({ id, name })
-  return res.status(201).json({
-    success: true,
+  const ids = people.map((e) => {return e.id})
+  let newId
+  for(let i = 1;i <= ids.length+1; i++){
+    if(!ids.includes(i)){
+      newId = i
+      break
+  }}
+  let newPerson = { id: newId, name }
+
+  people.push(newPerson)
+  res.status(201).json({
+    sucess: true,
     data: people
-})})
-
-
-
+  })
+})
 
 
 
