@@ -29,7 +29,7 @@ app.get('/data/param/:personId', (req, res) => {
 app.get('/data/query', (req, res) => {
   const {search, limit} = req.query
   let sortedPeople = [...people]
-  search.trim().toLowerCase()
+  search = search?.trim().toLowerCase()
   if(search) {
     sortedPeople = sortedPeople.filter((person) => {
       return person.name.startsWith(search)
