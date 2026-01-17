@@ -27,7 +27,7 @@ app.get('/data/param/:personId', (req, res) => {
   return res.json({success: true, data: person})
 })
 app.get('/data/query', (req, res) => {
-  const {search, limit} = req.query
+  let {search, limit} = req.query
   let sortedPeople = [...people]
   search = search?.trim().toLowerCase()
   if(search) {
