@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 function logger(req, res, next){
   console.log(
     req.method,
@@ -13,6 +15,7 @@ function logger(req, res, next){
       req.body
     )
   }
+
   next()
 }
 
